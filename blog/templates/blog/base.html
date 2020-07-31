@@ -1,0 +1,252 @@
+<!-- this is base template with navbar and footer -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title> Django_Blog</title>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          rel="stylesheet" media="screen"/>
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}"/>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <style>
+body {
+  margin:0%;
+  padding:0%;
+  background: #dedede;
+}
+
+.my {
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  margin:68% 0%;
+  padding:0;
+  display:flex;
+}
+
+ul li {
+  list-style: none;
+}
+
+.my li a {
+  position: relative;
+  width:60px;
+  height:60px;
+  display:block;
+  text-align:center;
+  margin:0 10px;
+  border-radius: 50%;
+  padding: 6px;
+  box-sizing: border-box;
+  text-decoration:none;
+  box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+  background: linear-gradient(0deg, #ddd, #fff);
+  transition: .5s;
+}
+
+.my li a:hover {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+ul li a .fa {
+  width: 100%;
+  height:100%;
+  display:block;
+  background: linear-gradient(0deg, #fff, #ddd);
+  border-radius: 50%;
+  line-height: calc(60px - 12px);
+  font-size:24px;
+  color: #262626;
+  transition: .5s;
+}
+
+ul li:nth-child(1) a:hover .fa {
+  color: #3b5998;
+}
+
+ul li:nth-child(2) a:hover .fa {
+  color: #00aced;
+}
+
+ul li:nth-child(3) a:hover .fa {
+  color: #dd4b39;
+}
+
+ul li:nth-child(4) a:hover .fa {
+  color: #007bb6;
+}
+
+ul li:nth-child(5) a:hover .fa {
+  color: #e4405f;
+}
+    </style>
+
+</head>
+
+<body style="background-color:light gray;">
+
+<!-- navbar -->
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'blog:home' %}" style="font-size:50px;font-style:italic;">KALAM</a>
+            <i class="fa fa-pencil" style="font-size:48px;color:red"></i>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse navbar-right">
+            <!-- show registration only if user is not yet authenticated -->
+            {% if not user.is_authenticated %}
+                <ul class="nav navbar-nav ">
+                    <li class="active"><a href="{% url 'register' %}">Registration</a></li>
+                </ul>
+            {% endif %}
+            <!-- show login only if user is not yet authenticated -->
+            {% if not user.is_authenticated %}
+                <ul class="nav navbar-nav ">
+                    <li class="active"><a href="{% url 'login' %}">Login</a></li>
+                </ul>
+            {% endif %}
+            <!-- show My Blog only if user is authenticated -->
+            {% if user.is_authenticated %}
+                <ul class="nav navbar-nav ">
+                    <li class="active"><a href="{% url 'blog:user_posts' user.username %}">My Blog</a></li>
+                </ul>
+            {% endif %}
+            <!-- show new post only if user is authenticated -->
+            {% if user.is_authenticated %}
+                <ul class="nav navbar-nav ">
+                    <li class="active"><a href="{% url 'blog:create_post' %}">New Post</a></li>
+                </ul>
+            {% endif %}
+            <!-- show sign out only if user is authenticated -->
+            {% if user.is_authenticated %}
+                <ul class="nav navbar-nav ">
+                    <li class="active"><a href="{% url 'logout' %}">Sign Out</a></li>
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<div id="content">
+    {% block content %}{% endblock %}
+</div>
+
+<hr>
+
+<!-- footer -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12" style="margin:5%;">
+
+            <!-- Logged user info -->
+            {% if user.is_authenticated %}
+                <p class="text-center">
+                    | Logged user: {{ user.username }}
+                    | Email: {{ user.email }}
+                    | Admin:{{ user.is_superuser }}
+                    | <a href="{% url 'logout' %}">Sign Out</a>
+                </p>
+            {% endif %}
+
+
+        </div>
+    </div>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+</div>
+
+
+    <div>
+        <div class="w3-row-padding">
+  <div class="w3-third">
+
+    <p>”Other people are going to find healing in your wounds.
+        Your greatest life messages and your most effective
+        ministry will come out of your deepest hurts.”</p>
+
+                                         <p style="margin:10%;"> — Rick Warren </p>
+
+  </div>
+
+  <div class="w3-third">
+
+    <p>”Express yourself through writing
+        when no one is able to listen,Inspire others
+        when you own don't understand your words”
+.</p>
+      <p style="margin:10%;">― Chalisa Singh</p>
+  </div>
+
+  <div class="w3-third">
+
+    <p>
+        ”Live life as though nobody is watching,
+        and express yourself as though everyone
+        is listening.”
+    </p>
+<p style="margin :10%;">   -Nelson Mandela</p>
+
+  </div>
+
+
+    </div>
+
+<div style="margin :1% 1%;background-color:gray;">
+
+
+
+
+<div class="w3-row-padding">
+  <div class="w3-third">
+<h3> About Us</h3>
+    <p> I had created this website for those who want , to share their
+        feelings in hindi we say "maan ki baat" ,who want to express themself
+        but there's no one to listen to them .So on kalam you can write
+        whatever they want ,this a family where no one is judged by  anyone .
+    </p>
+  </div>
+
+  <div class="w3-third" style="padding :0%10%;">
+      <h3> Our Events</h3>
+
+    <p>blogging competition.</p>
+      <p>Online Webinars.</p>
+      <p> Marathons.</p>
+      <p>Cleanliness Drive.</p>
+<h3 style="margin :100% 15%;"> Follow Us </h3>
+
+   <ul class="my">
+  <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+  <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+  <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+  <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+  <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+</ul>
+
+
+  </div>
+
+  <div class="w3-third">
+<h3>
+    Contact Us
+</h3>
+      <p> Email us : kalam001@gmail.com</p>
+      <p> phone    :     +91 9960589552</p>
+  </div>
+</div>
+ <div style="margin:68%30%;" >
+                <p class="text-center">&copy; 2020 Saifee Alafiya All Rights Are Reserved</p>
+            </div>
+</body>
+</html>
